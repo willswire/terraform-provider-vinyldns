@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/vinyldns/go-vinyldns/vinyldns"
+	"github.com/willswire/go-vinyldns/vinyldns"
 )
 
 func TestAccVinylDNSZoneDataSource_basic(t *testing.T) {

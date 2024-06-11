@@ -4,8 +4,8 @@ go 1.17
 
 require (
 	github.com/hashicorp/terraform-plugin-sdk v1.7.0
-	github.com/ulikunitz/xz v0.5.8 // indirect - FIX FOR CVE-2021-29482
-	github.com/vinyldns/go-vinyldns v0.9.16
+	github.com/ulikunitz/xz v0.5.8 // indirect; indirect - FIX FOR CVE-2021-29482
+	github.com/willswire/go-vinyldns v0.0.0-20240611140353-e908c203346e
 )
 
 require (

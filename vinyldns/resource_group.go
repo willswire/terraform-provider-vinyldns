@@ -19,7 +19,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/hashcode"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/vinyldns/go-vinyldns/vinyldns"
+	"github.com/willswire/go-vinyldns/vinyldns"
 )
 
 func resourceVinylDNSGroup() *schema.Resource {

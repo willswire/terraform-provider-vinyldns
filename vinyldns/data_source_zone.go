@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/vinyldns/go-vinyldns/vinyldns"
+	"github.com/willswire/go-vinyldns/vinyldns"
 )
 
 func dataSourceVinylDNSZone() *schema.Resource {

@@ -18,7 +18,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"github.com/vinyldns/go-vinyldns/vinyldns"
+	"github.com/willswire/go-vinyldns/vinyldns"
 )
 
 func TestAccVinylDNSRecordSetBasic(t *testing.T) {

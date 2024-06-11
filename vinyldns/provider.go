@@ -13,11 +13,14 @@ limitations under the License.
 package vinyldns
 
 import (
+	"crypto/tls"
+	"crypto/x509"
+	"net/http"
 	"os"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"github.com/vinyldns/go-vinyldns/vinyldns"
+	"github.com/willswire/go-vinyldns/vinyldns"
 )
 
 // Provider returns a schema.Provider for VinylDNS.
@@ -38,6 +41,11 @@ func Provider() terraform.ResourceProvider {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: envDefaultFunc("VINYLDNS_HOST"),
+			},
+			"client_cert": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: envDefaultFuncAllowMissing("VINYLDNS_CLIENT_CERT"),
 			},
 		},
 
@@ -78,6 +86,31 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		SecretKey: d.Get("secret_key").(string),
 		Host:      d.Get("host").(string),
 		UserAgent: GetUserAgent(),
+	}
+
+	clientCertPath := d.Get("client_cert").(string)
+	if clientCertPath != "" {
+		cert, err := tls.LoadX509KeyPair(clientCertPath, clientCertPath)
+		if err != nil {
+			return nil, err
+		}
+
+		caCertPool := x509.NewCertPool()
+		caCert, err := os.ReadFile(clientCertPath)
+		if err != nil {
+			return nil, err
+		}
+		caCertPool.AppendCertsFromPEM(caCert)
+
+		tlsConfig := &tls.Config{
+			Certificates: []tls.Certificate{cert},
+			RootCAs:      caCertPool,
+		}
+
+		transport := &http.Transport{TLSClientConfig: tlsConfig}
+		httpClient := &http.Client{Transport: transport}
+
+		config.HTTPClient = httpClient
 	}
 
 	return vinyldns.NewClient(config), nil
