@@ -95,7 +95,16 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			return nil, err
 		}
 
-		caCertPool := x509.NewCertPool()
+		// Initialize caCertPool with the system's CAs
+		caCertPool, err := x509.SystemCertPool()
+		if err != nil {
+			return nil, err
+		}
+		if caCertPool == nil {
+			caCertPool = x509.NewCertPool()
+		}
+
+		// Read and append the custom CA
 		caCert, err := os.ReadFile(clientCertPath)
 		if err != nil {
 			return nil, err
